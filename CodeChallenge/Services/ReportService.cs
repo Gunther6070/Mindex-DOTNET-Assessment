@@ -34,7 +34,6 @@ public class ReportService : IReportService
         {
             throw new KeyNotFoundException(employeeId);
         }
-        Console.WriteLine(employee.DirectReports);
 
         return new ReportingStructure() { Employee = employee };
 
