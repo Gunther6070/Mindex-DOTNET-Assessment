@@ -20,7 +20,7 @@ public class ReportingStructure
     private static int CountReports(List<Employee> reporters)
     {
         var sum = 0;
-        if (reporters.Count == 0)
+        if (reporters == null || reporters.Count == 0)
         {
             return 0;
         }
