@@ -29,7 +29,11 @@ namespace CodeChallenge.Repositories
 
         public Employee GetById(string id)
         {
-            return _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            var employee = _employeeContext.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            
+            LoadDirectReports(employee);
+            
+            return employee;
         }
 
         public Task SaveAsync()
@@ -40,6 +44,21 @@ namespace CodeChallenge.Repositories
         public Employee Remove(Employee employee)
         {
             return _employeeContext.Remove(employee).Entity;
+        }
+        
+        private void LoadDirectReports(Employee employee)
+        {
+            if (employee == null)
+            {
+                return;
+            }
+
+            _employeeContext.Entry(employee).Collection(e => e.DirectReports).Load();
+
+            foreach (var report in employee.DirectReports)
+            {
+                LoadDirectReports(report);
+            }
         }
     }
 }
