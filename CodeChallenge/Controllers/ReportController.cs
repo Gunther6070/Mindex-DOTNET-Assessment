@@ -12,7 +12,7 @@ public class ReportController : ControllerBase
     private readonly ILogger _logger;
     private readonly IReportService _reportService;
     
-    public ReportController(ILogger<EmployeeController> logger, IReportService reportService)
+    public ReportController(ILogger<ReportController> logger, IReportService reportService)
     {
         _logger = logger;
         _reportService = reportService;
