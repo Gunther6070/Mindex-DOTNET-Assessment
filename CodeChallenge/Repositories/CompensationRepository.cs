@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using CodeChallenge.Data;
 using CodeChallenge.Models;
 using Microsoft.Extensions.Logging;
@@ -19,14 +20,19 @@ public class CompensationRepository : ICompensationRepository
     
     public Compensation Add(Compensation compensation)
     {
-        compensation.DateTime = DateAndTime.Now;
+        compensation.EffectiveDate = DateAndTime.Now;
         _compensationContext.Compensations.Add(compensation);
         return compensation;
     }
     
     public Compensation GetById(string id)
     {
-        return _compensationContext.Compensations.SingleOrDefault(e => e.Employee.EmployeeId == id);
+        return _compensationContext.Compensations.SingleOrDefault(e => e.Employee == id);
+    }
+    
+    public Task SaveAsync()
+    {
+        return _compensationContext.SaveChangesAsync();
     }
 
     
