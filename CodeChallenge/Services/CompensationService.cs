@@ -21,7 +21,7 @@ public class CompensationService : ICompensationService
         
     public Compensation Create(Compensation compensation)
     {
-        if (compensation.Employee == null) throw new KeyNotFoundException();
+        if (string.IsNullOrEmpty(compensation.Employee)) throw new KeyNotFoundException();
         
         var employee = _employeeService.GetById(compensation.Employee);
         if (employee == null) throw new KeyNotFoundException();
