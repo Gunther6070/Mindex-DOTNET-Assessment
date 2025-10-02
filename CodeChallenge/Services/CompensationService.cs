@@ -19,6 +19,21 @@ public class CompensationService : ICompensationService
         _logger = logger;
     }
         
+    /// <summary>
+    /// Creates a persistent Compensation object
+    /// </summary>
+    /// <param name="compensation">
+    /// The passed compensation to create
+    /// </param>
+    /// <returns>
+    /// Returns the created compensation
+    /// </returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Throws a KeyNotFound exception if the given employee doesn't exist
+    /// </exception>
+    /// <exception cref="DuplicateNameException">
+    /// Throws a Duplicate exception if a compensation for an employee already exists
+    /// </exception>
     public Compensation Create(Compensation compensation)
     {
         if (string.IsNullOrEmpty(compensation.Employee)) throw new KeyNotFoundException();
@@ -35,6 +50,18 @@ public class CompensationService : ICompensationService
 
     }
 
+    /// <summary>
+    /// Returns a Compensation for the given employeeId
+    /// </summary>
+    /// <param name="employeeId">
+    /// The ID of an employee
+    /// </param>
+    /// <returns>
+    /// A compensation for an employee
+    /// </returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Throws KeyNotFound exception if the employee or compensation doesn't exist
+    /// </exception>
     public Compensation GetById(string employeeId)
     {
         if (string.IsNullOrEmpty(employeeId)) throw new KeyNotFoundException();
