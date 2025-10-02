@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using CodeChallenge.Models;
 using CodeChallenge.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,7 @@ public class CompensationController : ControllerBase
     /// Compensation to create
     /// </param>
     /// <returns>
-    /// 200 if no error, 409 is compensation already exists
+    /// 200 if no error, 409 if compensation already exists, 404 is the employeeId doesn't exist
     /// </returns>
     [HttpPost]
     public IActionResult CreateCompensation([FromBody] Compensation compensation)
@@ -34,10 +36,15 @@ public class CompensationController : ControllerBase
         _logger.LogDebug("Received compensation create request for compensation '{compensation}'", compensation);
         try
         {
-            var newCompensation = _compensationService.Create(compensation); 
-            return CreatedAtRoute("getCompensation", new { id = newCompensation.Employee.EmployeeId }, compensation);
+            var newCompensation = _compensationService.Create(compensation);
+            return CreatedAtRoute("getCompensation", new { id = newCompensation.Employee }, compensation);
         }
-        catch (Exception e)
+        catch (KeyNotFoundException e)
+        {
+            _logger.LogError("Error: '{error}'", e);
+            return NotFound();
+        }
+        catch (DuplicateNameException e)
         {
             _logger.LogError("Error: '{error}'", e);
             return Conflict();
@@ -52,7 +59,7 @@ public class CompensationController : ControllerBase
     /// ID of the desired employee
     /// </param>
     /// <returns>
-    /// 200 if no error, 404 is employee doesn't exist
+    /// 200 if no error, 404 if employee doesn't exist
     /// </returns>
     [HttpGet("{id}", Name = "getCompensation")]
     public IActionResult GetCompensation(string id)
@@ -60,8 +67,8 @@ public class CompensationController : ControllerBase
         _logger.LogDebug("Received compensation get request for employee '{EmployeeId}'", id);
         try
         {
-            var reportStructure = _compensationService.GetById(id); 
-            return Ok(reportStructure);
+            var compensation = _compensationService.GetById(id); 
+            return Ok(compensation);
         }
         catch (Exception e)
         {
