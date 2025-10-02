@@ -20,7 +20,6 @@ public class CompensationRepository : ICompensationRepository
     
     public Compensation Add(Compensation compensation)
     {
-        compensation.EffectiveDate = DateAndTime.Now;
         _compensationContext.Compensations.Add(compensation);
         return compensation;
     }
