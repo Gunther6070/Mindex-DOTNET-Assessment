@@ -1,11 +1,12 @@
 using System;
-using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CodeChallenge.Models;
 
 public class Compensation
 {
-    public Employee Employee { get; set; }
+    [Key]
+    public string Employee { get; set; }
     public int Salary { get; set; }
-    public DateTime DateTime { get; set; }
+    public DateTime EffectiveDate { get; set; }
 }
